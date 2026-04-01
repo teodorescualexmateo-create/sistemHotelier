@@ -16,9 +16,7 @@ else()
 endif()
 
 # Main executable
-add_executable(${PROJECT_NAME} main.cpp)
-
-if(GITHUB_ACTIONS)
+add_executable(${PROJECT_NAME} main.cpp Utilizator.cpp Client.cpp Proprietar.cpp Serviciu.cpp Cazare.cpp Transport.cpp PachetVacanta.cpp Rezervare.cpp InterfataSistem.cpp)if(GITHUB_ACTIONS)
     message("NOTE: GITHUB_ACTIONS defined")
     target_compile_definitions(${PROJECT_NAME} PRIVATE GITHUB_ACTIONS)
 endif()
