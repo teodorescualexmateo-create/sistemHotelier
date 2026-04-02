@@ -7,7 +7,7 @@ class Cazare: virtual public Serviciu{
         int capacitatePersoane;
         bool oferaParcare;
     public:
-        Cazare(std::string denumire, double pretBaza, double pretNoapte, int capacitatePersoane, bool oferaParcare);
+        Cazare(const std::string& denumire, double pretBaza, double pretNoapte, int capacitatePersoane, bool oferaParcare);
         
         Cazare(const Cazare& alta);
         Cazare& operator=(const Cazare& alta);

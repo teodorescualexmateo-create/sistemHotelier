@@ -11,7 +11,7 @@ class Utilizator {
         std::string parola;
         static int contorID;
     public:
-        Utilizator(std::string nume, std::string email, std::string parola);
+        Utilizator(const std::string& nume, const std::string& email, const std::string& parola);
 
         //Destructor virtual
         virtual ~Utilizator();

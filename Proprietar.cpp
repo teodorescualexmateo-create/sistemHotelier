@@ -2,7 +2,7 @@
 #include <iostream>
 #include<vector>
 
-Proprietar::Proprietar(std::string nume, std::string email, std::string parola): Utilizator(nume,email,parola){
+Proprietar::Proprietar(const std::string& nume, const std::string& email, const std::string& parola): Utilizator(nume, email, parola){
     venitTotal=0.0;
 }
 

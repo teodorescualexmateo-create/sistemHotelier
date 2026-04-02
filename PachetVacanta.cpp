@@ -2,8 +2,8 @@
 #include <iostream>
 #include<iomanip>
 
-PachetVacanta::PachetVacanta(std::string nume, double taxaFixa, double pNoapte, int cap, bool parc, 
-                             double pKm, std::string vehicul, double discount)
+PachetVacanta::PachetVacanta(const std::string& nume, double taxaFixa, double pNoapte, int cap, bool parc, 
+                             double pKm, const std::string& vehicul, double discount)
     : Serviciu(nume, taxaFixa), 
       Cazare(nume, taxaFixa, pNoapte, cap, parc),
       Transport(nume, taxaFixa, pKm, vehicul),

@@ -1,7 +1,7 @@
 #include "Client.h"
 #include<iostream>
 
-Client::Client(std::string nume, std::string email, std::string parola,double balanta): Utilizator(nume,email,parola){
+Client::Client(const std::string& nume, const std::string& email, const std::string& parola, double balanta): Utilizator(nume, email, parola){
     this->balanta=balanta;
 }
 Client::~Client(){}

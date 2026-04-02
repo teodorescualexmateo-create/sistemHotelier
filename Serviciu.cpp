@@ -2,7 +2,7 @@
 #include<iostream>
 int Serviciu::contorIdServicii = 1000;
 
-Serviciu::Serviciu(std::string nume, double taxaFixa):nume(nume),taxaFixa(taxaFixa){
+Serviciu::Serviciu(const std::string& nume, double taxaFixa):nume(nume),taxaFixa(taxaFixa){
     this->idServiciu = ++contorIdServicii;
 }
 
@@ -16,6 +16,7 @@ Serviciu& Serviciu::operator=(const Serviciu& altul) {
     if (this != &altul) {
         this->nume = altul.nume;
         this->taxaFixa = altul.taxaFixa;
+        this->idServiciu = ++contorIdServicii;
     }
     return *this;
 }

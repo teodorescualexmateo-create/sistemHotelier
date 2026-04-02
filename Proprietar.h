@@ -9,7 +9,7 @@ private:
     std::vector<void*> proprietatiDeInchiriat; 
 
 public:
-    Proprietar(std::string nume, std::string email, std::string parola);
+    Proprietar(const std::string& nume, const std::string& email, const std::string& parola);
     ~Proprietar() override;
 
     void afiseazaProfil() const override;

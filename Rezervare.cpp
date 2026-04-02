@@ -24,6 +24,7 @@ Rezervare& Rezervare::operator=(const Rezervare& alta) {
         this->serviciuAles = alta.serviciuAles;
         this->unitati = alta.unitati;
         this->nrPersoane = alta.nrPersoane;
+        this->idRezervare = ++contorRezervari;
     }
     return *this;
 }

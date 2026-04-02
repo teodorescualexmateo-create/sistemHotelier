@@ -7,7 +7,7 @@ protected:
     std::string tipVehicul;
 
 public:
-    Transport(std::string nume, double taxaFixa, double pretKm, std::string tip);
+    Transport(const std::string& nume, double taxaFixa, double pretKm, const std::string& tip);
 
     Transport(const Transport& altul);
     Transport& operator=(const Transport& altul);

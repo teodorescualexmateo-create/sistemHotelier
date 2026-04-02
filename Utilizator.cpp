@@ -2,7 +2,7 @@
 
 int Utilizator::contorID = 0;
 
-Utilizator::Utilizator(std::string nume, std::string email, std::string parola):
+Utilizator::Utilizator(const std::string& nume, const std::string& email, const std::string& parola):
     nume(nume), email(email), parola(parola){
         this->id = ++contorID;
 }

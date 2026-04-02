@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-Cazare::Cazare(std::string denumire, double pretBaza, double pretNoapte, int capacitatePersoane, bool oferaParcare):
+Cazare::Cazare(const std::string& denumire, double pretBaza, double pretNoapte, int capacitatePersoane, bool oferaParcare):
         Serviciu(denumire,pretBaza), pretNoapte(pretNoapte),capacitatePersoane(capacitatePersoane), oferaParcare(oferaParcare){}
         
 Cazare::Cazare(const Cazare& alta) : Serviciu(alta) {

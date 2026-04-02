@@ -8,7 +8,7 @@ private:
 
 public:
     // Constructor care primeste mesajul erorii
-    explicit SistemException(std::string m) : mesaj(std::move(m)) {}
+    explicit SistemException(const std::string& m) : mesaj(std::move(m)) {}
 
     const char* what() const noexcept override {
         return mesaj.c_str();

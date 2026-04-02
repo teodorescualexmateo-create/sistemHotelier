@@ -9,7 +9,7 @@ class Serviciu {
         double taxaFixa;
         static int contorIdServicii;
     public:
-        Serviciu(std::string nume, double taxaFixa);
+        Serviciu(const std::string& nume, double taxaFixa);
         // constructor de copiere
         Serviciu(const Serviciu& altul);
         Serviciu& operator=(const Serviciu& altul);

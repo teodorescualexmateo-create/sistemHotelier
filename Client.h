@@ -5,7 +5,7 @@ class Client:public Utilizator{
     private:
         double balanta;
     public:
-        Client(std::string nume, std::string email, std::string parola,double balanta);
+        Client(const std::string& nume, const std::string& email, const std::string& parola, double balanta);
 
         ~Client();
         void afiseazaProfil() const override;

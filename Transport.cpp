@@ -1,7 +1,7 @@
 #include "Transport.h"
 #include <iostream>
 
-Transport::Transport(std::string nume, double taxaFixa, double pretKm, std::string tip)
+Transport::Transport(const std::string& nume, double taxaFixa, double pretKm, const std::string& tip)
     : Serviciu(nume, taxaFixa), pretPerKm(pretKm), tipVehicul(tip) {
 }
 Transport::Transport(const Transport& altul) : Serviciu(altul) {

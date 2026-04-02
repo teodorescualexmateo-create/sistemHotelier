@@ -7,8 +7,8 @@ class PachetVacanta : public Cazare, public Transport {
         double discountPachet; // 0.1 pt 10% reducere
 
     public:
-        PachetVacanta(std::string nume, double taxaFixa, double pNoapte, int cap, bool parc, 
-                    double pKm, std::string vehicul, double discount);
+        PachetVacanta(const std::string& nume, double taxaFixa, double pNoapte, int cap, bool parc, 
+                    double pKm, const std::string& vehicul, double discount);
                     
         PachetVacanta(const PachetVacanta& altul);
         PachetVacanta& operator=(const PachetVacanta& altul);
