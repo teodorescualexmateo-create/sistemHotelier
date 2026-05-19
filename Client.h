@@ -1,5 +1,6 @@
 #pragma once
 #include "Utilizator.h"
+#include "Serviciu.h"
 
 class Client:public Utilizator{
     private:
@@ -12,6 +13,8 @@ class Client:public Utilizator{
         void depunere(double suma);
         bool retragere(double suma);
         double getBalanta() const { return balanta; }
+
+        bool efectueazaRezervare(Serviciu* serviciu, int unitati, int persoane, int km = 0);
 
         
 };

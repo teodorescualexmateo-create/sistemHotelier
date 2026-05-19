@@ -1,3 +1,4 @@
+#pragma once
 #include "Serviciu.h"
 #include <string>
 //mostenire virtuala pt diamant

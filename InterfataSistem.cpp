@@ -1,7 +1,9 @@
 #include "InterfataSistem.h"
 #include "Cazare.h"
 #include "Transport.h"
+#include "PachetVacanta.h"
 #include "Rezervare.h"
+#include "ServiciuFactory.h"
 #include <iostream>
 
 // initierea singleton-urilor
@@ -23,57 +25,103 @@ void MeniuClient::run(Client* client, std::vector<Serviciu*>& catalog) {
             if (catalog.empty()) {
                 std::cout << "Nu exista servicii disponibile in catalog!\n";
             } else {
-                std::cout << "\n--- SERVICII DISPONIBILE ---\n";
-                for (int i = 0; i < (int)catalog.size(); ++i) {
-                    std::cout << i << ". ";
+                std::cout << "\n--- CATALOG SERVICII DISPONIBILE ---\n";
+                for (int i = 0; i < (int)catalog.size(); i++) {
+                    std::cout << "Index [" << i << "] ";
                     catalog[i]->afiseazaDetalii();
                 }
 
-            int index, nopti, persoane;
-            std::cout << "Alegeti indexul serviciului: "; 
-            std::cin >> index;
-            
-            if (index >= 0 && index < (int)catalog.size()) {
-                std::cout << "Numar nopti/unitati: "; 
-                std::cin >> nopti;
-                std::cout << "Numar persoane: "; 
-                std::cin >> persoane;
+                int index;
+                std::cout << "Alegeti indexul serviciului dorit: "; 
+                std::cin >> index;
+                
+                if (index >= 0 && index < (int)catalog.size()) {
+                    int nopti = 0, km = 0, persoane = 0;
+                    
+                    
+                    if (dynamic_cast<PachetVacanta*>(catalog[index])) {
+                        std::cout << "Numar nopti cazare: "; std::cin >> nopti;
+                        std::cout << "Numar kilometri transport: "; std::cin >> km;
+                    } 
+                    else if (dynamic_cast<Transport*>(catalog[index])) {
+                        std::cout << "Numar kilometri: "; std::cin >> nopti; 
+                    } 
+                    else {
+                        std::cout << "Numar nopti: "; std::cin >> nopti;
+                    }
+                    
+                    std::cout << "Numar persoane: "; std::cin >> persoane;
 
-                try {
-                    Rezervare* rez_noua = new Rezervare(client, catalog[index], nopti, persoane);
-                    rez_noua->finalizeazaRezervare();
-                    rez_noua->afiseazaFactura();
-                } 
-                catch (const SistemException& e) {
-                    std::cerr << "EROARE REZERVARE: " << e.what() << "\n";
+                    try {
+                        client->efectueazaRezervare(catalog[index], nopti, persoane, km);
+                    } 
+                    catch (const SistemException& e) {
+                        std::cerr << "EROARE REZERVARE: " << e.what() << "\n";
+                    }
                 }
-            } else {
-                std::cout << "Index invalid!\n";
             }
         }
     }
 }
-}
+
 
 void MeniuProprietar::run(Proprietar* prop, std::vector<Serviciu*>& catalog) {
     int opt = -1;
     while (opt != 0) {
         std::cout << "\n--- ADMIN: " << prop->getNume() << " ---\n";
-        std::cout << "1. Adauga Cazare\n2. Afiseaza Venituri Taxe\n3. Sterge Serviciu (ID)\n0. Logout\nSelectie: ";
+        std::cout << "1. Adauga\n2. Afiseaza Venituri Taxe\n3. Sterge Serviciu (ID)\n0. Logout\nSelectie: ";
         std::cin >> opt;
         
         if (opt == 1) {
-            std::string nume; double taxa, pret; int cap;
-            std::cout << "Nume: "; 
-            std::cin.ignore(); // pt buffer
-            std::getline(std::cin, nume); // pt spatiu dintre cuv
-            std::cout << "Taxa: "; std::cin >> taxa;
-            std::cout << "Pret/noapte: "; std::cin >> pret;
-            std::cout << "Capacitate: "; std::cin >> cap;
-            std::cout << "Ofera parcare? (DA/NU): "; std::string parcare; std::cin >> parcare;
-            bool areParcare = (parcare == "DA" || parcare == "da");
-            catalog.push_back(new Cazare(nume, taxa, pret, cap, areParcare));
-            std::cout << "Succes!\n";
+            std::string denumire;
+            double pretBaza;
+            std::cout << "Denumire serviciu: "; std::cin.ignore(); std::getline(std::cin, denumire);
+            std::cout << "Taxa fixa (pret baza): "; std::cin >> pretBaza;
+
+            std::cout << "Ce tip de serviciu doriti sa adaugati?\n1. Cazare\n2. Transport\n3. Pachet Vacanta\nOptiune: ";
+            int tipServiciu;
+            std::cin >> tipServiciu;
+
+            if (tipServiciu == 1) {
+                double pretNoapte;
+                int capacitate;
+                bool parcare;
+                std::cout << "Pret pe noapte: "; std::cin >> pretNoapte;
+                std::cout << "Capacitate persoane: "; std::cin >> capacitate;
+                std::cout << "Ofera parcare? (1 = Da, 0 = Nu): "; std::cin >> parcare;
+
+                catalog.push_back(ServiciuFactory::creazaCazare(denumire, pretBaza, pretNoapte, capacitate, parcare));
+                std::cout << "Cazare adaugata cu succes in catalog!\n";
+            }
+            else if (tipServiciu == 2) {
+                double pretKm;
+                std::string vehicul;
+                std::cout << "Pret pe kilometru: "; std::cin >> pretKm;
+                std::cout << "Tip vehicul (ex: Autobuz, Avion, Masina): "; std::cin.ignore(); std::getline(std::cin, vehicul);
+
+                catalog.push_back(ServiciuFactory::creazaTransport(denumire, pretBaza, pretKm, vehicul));
+                std::cout << "Transport adaugat cu succes in catalog!\n";
+            }
+            else if (tipServiciu == 3) {
+                double pretNoapte, pretKm, discount;
+                int capacitate;
+                bool parcare;
+                std::string vehicul;
+
+                std::cout << "[Date Cazare] Pret pe noapte: "; std::cin >> pretNoapte;
+                std::cout << "[Date Cazare] Capacitate persoane: "; std::cin >> capacitate;
+                std::cout << "[Date Cazare] Ofera parcare? (1 = Da, 0 = Nu): "; std::cin >> parcare;
+                std::cout << "[Date Transport] Pret pe kilometru: "; std::cin >> pretKm;
+                std::cout << "[Date Transport] Tip vehicul: "; std::cin.ignore(); std::getline(std::cin, vehicul);
+                std::cout << "Discount pachet (ex: 0.10 pentru 10%): "; std::cin >> discount;
+
+                catalog.push_back(ServiciuFactory::creazaPachet(denumire, pretBaza, pretNoapte, capacitate, parcare, pretKm, vehicul, discount));
+                std::cout << "Pachet Vacanta adaugat cu succes in catalog!\n";
+            }
+            else {
+                std::cout << "Optiune invalida de serviciu!\n";
+            }
+        
         } 
         else if (opt == 2) {
             double total = 0;
@@ -87,7 +135,7 @@ void MeniuProprietar::run(Proprietar* prop, std::vector<Serviciu*>& catalog) {
             std::cout << "ID pentru stergere: "; std::cin >> id;
             for (auto it = catalog.begin(); it != catalog.end(); ++it) {
                 if ((*it)->getId() == id) {
-                    delete *it;
+                    delete *it; 
                     catalog.erase(it);
                     std::cout << "Eliminat.\n";
                     break;

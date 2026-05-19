@@ -1,4 +1,6 @@
 #include "Client.h"
+#include "Rezervare.h"
+#include "Exception.h"
 #include<iostream>
 
 Client::Client(const std::string& nume, const std::string& email, const std::string& parola, double balanta): Utilizator(nume, email, parola){
@@ -32,5 +34,28 @@ bool Client::retragere(double suma){
     }else{
         std::cout<<"Fonduri insuficiente!"<<std::endl;
         return false;
+    }
+}
+
+
+bool Client::efectueazaRezervare(Serviciu* serviciu, int unitati, int persoane, int km) {
+    if (serviciu == nullptr) {
+        throw SistemException("Serviciul selectat nu este valid!");
+    }
+
+    double pretUnitar = serviciu->calculeazaPret();
+    double costTotal = pretUnitar * unitati;
+
+    if (balanta >= costTotal) {
+        balanta -= costTotal;
+        
+        Rezervare* rez = new Rezervare(this, serviciu, unitati, persoane, km);
+        rez->finalizeazaRezervare();
+        rez->afiseazaFactura();
+        
+        delete rez; 
+        return true;
+    } else {
+        throw SistemException("Fonduri insuficiente pentru a finaliza aceasta rezervare!");
     }
 }

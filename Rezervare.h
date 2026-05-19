@@ -10,10 +10,11 @@ private:
     Serviciu* serviciuAles;
     int unitati; // nopti sau km 
     int nrPersoane;
+    int kmPachet;
     static int contorRezervari;
 
 public:
-    Rezervare(Client* c, Serviciu* s, int cantitate, int persoane);
+    Rezervare(Client* c, Serviciu* s, int cantitate, int persoane, int km = 0);
     ~Rezervare();
 
     // Regula celor 3 
