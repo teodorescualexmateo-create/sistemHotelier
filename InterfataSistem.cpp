@@ -4,6 +4,7 @@
 #include "PachetVacanta.h"
 #include "Rezervare.h"
 #include "ServiciuFactory.h"
+#include "StrategieSortare.h"
 #include <iostream>
 
 // initierea singleton-urilor
@@ -20,12 +21,55 @@ void MeniuClient::run(Client* client, std::vector<Serviciu*>& catalog) {
         else if (opt == 2) { double s; std::cout << "Suma: "; std::cin >> s; client->depunere(s); }
         else if (opt == 3) { double s; std::cout << "Suma: "; std::cin >> s; client->retragere(s); }
         else if (opt == 4) {
+                std::cout << "\n--- CATALOG SERVICII DISPONIBILE ---\n";
+                std::cout << "Cum doriti sa fie afisat catalogul?\n";
+                std::cout << "1. Sortat crescator dupa pret\n";
+                std::cout << "2. Sortat alfabetic (dupa denumire)\n";
+                std::cout << "3. Nesortat (implicit)\n";
+                std::cout << "Optiune sortare: ";
+                
+                int optSortare;
+                std::cin >> optSortare;
+
+                StrategieSortare* strategie = nullptr;
+                if (optSortare == 1) {
+                    strategie = new SortareDupaPret();
+                } else if (optSortare == 2) {
+                    strategie = new SortareDupaNume();
+                }
+
+                if (strategie != nullptr) {
+                    strategie->sorteaza(catalog);
+                    delete strategie; 
+                }
             for (auto s : catalog) s->afiseazaDetalii();
         }else if (opt == 5) {
             if (catalog.empty()) {
                 std::cout << "Nu exista servicii disponibile in catalog!\n";
             } else {
+                
                 std::cout << "\n--- CATALOG SERVICII DISPONIBILE ---\n";
+                std::cout << "Cum doriti sa fie afisat catalogul?\n";
+                std::cout << "1. Sortat crescator dupa pret\n";
+                std::cout << "2. Sortat alfabetic (dupa denumire)\n";
+                std::cout << "3. Nesortat (implicit)\n";
+                std::cout << "Optiune sortare: ";
+                
+                int optSortare;
+                std::cin >> optSortare;
+
+                StrategieSortare* strategie = nullptr;
+                if (optSortare == 1) {
+                    strategie = new SortareDupaPret();
+                } else if (optSortare == 2) {
+                    strategie = new SortareDupaNume();
+                }
+
+                if (strategie != nullptr) {
+                    strategie->sorteaza(catalog);
+                    delete strategie; 
+                }
+
                 for (int i = 0; i < (int)catalog.size(); i++) {
                     std::cout << "Index [" << i << "] ";
                     catalog[i]->afiseazaDetalii();
@@ -37,7 +81,6 @@ void MeniuClient::run(Client* client, std::vector<Serviciu*>& catalog) {
                 
                 if (index >= 0 && index < (int)catalog.size()) {
                     int nopti = 0, km = 0, persoane = 0;
-                    
                     
                     if (dynamic_cast<PachetVacanta*>(catalog[index])) {
                         std::cout << "Numar nopti cazare: "; std::cin >> nopti;
@@ -61,6 +104,8 @@ void MeniuClient::run(Client* client, std::vector<Serviciu*>& catalog) {
                 }
             }
         }
+            
+        
     }
 }
 

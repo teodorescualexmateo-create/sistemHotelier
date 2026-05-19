@@ -20,5 +20,6 @@ class Serviciu {
 
         int getId() const { return idServiciu; }
         double getTaxaFixa() const { return taxaFixa; }
+        std::string getNume() const { return nume; }
 };
 
